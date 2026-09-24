@@ -9,6 +9,15 @@ import {
 import { queryClient } from './js/utils';
 import { CodeHighlightAdapterProvider, stripShikiCodeBlocks, CodeHighlightAdapter } from '@mantine/code-highlight';
 
+import '@fontsource/hanken-grotesk/400.css';
+import '@fontsource/hanken-grotesk/600.css';
+import '@fontsource/hanken-grotesk/700.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/jetbrains-mono/500.css';
+import '@fontsource/jetbrains-mono/700.css';
+
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/code-highlight/styles.css';

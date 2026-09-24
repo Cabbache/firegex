@@ -6,7 +6,8 @@ import { okNotify } from "../../js/utils";
 import { MdUploadFile, MdSave } from "react-icons/md";
 import { TbCode } from "react-icons/tb";
 import Editor from "@monaco-editor/react";
-import { Box } from "@mantine/core";
+import { setupMonaco } from "../../js/monaco";
+import { Box, Center, Loader } from "@mantine/core";
 
 export const EditFilterModal = ({ opened, onClose, service }: { opened: boolean, onClose: () => void, service?: Service }) => {
     const close = () => {
@@ -17,7 +18,18 @@ export const EditFilterModal = ({ opened, onClose, service }: { opened: boolean,
     const [submitLoading, setSubmitLoading] = useState(false)
     const [error, setError] = useState<string|null>(null)
     const [code, setCode] = useState<string>("");
-    
+    const [editorReady, setEditorReady] = useState(false);
+
+    useEffect(() => {
+        if (opened) {
+            setupMonaco().then(() => {
+                setEditorReady(true);
+            }).catch(err => {
+                setError("Error loading the code editor: " + err);
+            });
+        }
+    }, [opened])
+
     // Fetch code on open
     useEffect(() => {
         if (opened && service) {
@@ -71,7 +83,7 @@ export const EditFilterModal = ({ opened, onClose, service }: { opened: boolean,
             styles={{ body: { display: 'flex', flexDirection: 'column', height: '70vh' } }}
         >
             <Box style={{ flexGrow: 1, border: '1px solid var(--fourth_color)', borderRadius: 8, overflow: 'hidden' }}>
-                <Editor
+                {editorReady ? <Editor
                     height="100%"
                     language="python"
                     theme="vs-dark"
@@ -85,7 +97,7 @@ export const EditFilterModal = ({ opened, onClose, service }: { opened: boolean,
                         scrollBeyondLastLine: false,
                         smoothScrolling: true,
                     }}
-                />
+                /> : <Center h="100%"><Loader color="cyan" /></Center>}
             </Box>
 
             <Space h="md" />
